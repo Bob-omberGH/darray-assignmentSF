@@ -1,57 +1,100 @@
-/*
- * darray.c
- * A simple dynamic array for storing integers
- *
- * Copyright (C) 2024 Douglas Rumbaugh <dbrumbaugh@harrisburgu.edu>
- *
- * Distributed under the Modified BSD License.
- */
-#include "darray.h"
+#include "/home/seth/Desktop/darray-assignmentSF-master/include/darray.h"
+#include <stdlib.h>
+#include <stdio.h>
 
-struct darray {
-  /* your attributes go here */
+struct darray
+{
+    int size;
+    int thearray[];
 };
 
-/*
- * Create an empty darray object of size 0 and return a pointer to it. If the
- * creation should fail, return NULL.
- */
-darray *da_create() {
- 
+
+darray *da_create()
+{
+
+    darray *dar = malloc(sizeof(darray));
+
+    if(dar == NULL)
+    {
+        return NULL;
+    }
+
+    return dar;
+    // darray dar = {0, {}};
+    // darray dar1 = {0, {}, *dar};
+    // return dar1.poi;
+
+}
+
+int *da_get(darray *array, size_t idx)
+{
+    // if(idx > (int)(sizeof(array->thearray) / sizeof(array->thearray[0])))
+    // {
+    //     return NULL;
+    // }
+    if(idx > da_size(array))
+    {
+        return NULL;
+    }
+    if(idx < 0)
+    {
+        return NULL;
+    }
+
+
+    return &(array->thearray[idx]);
+
+
+}
+
+int da_append(darray *array, int value)
+{
+    if(array == NULL)
+    {
+        return 0;
+    }
+    array->size = (array->size + 1);
+
+    darray *newdar = realloc(array, (100*sizeof(darray)+1));
+
+    array = newdar;
+
+    array->thearray[da_size(array)-1] = value;
+
+    return 1;
+}
+
+void da_delete(darray *array)
+{
+    free(array);
+}
+
+size_t da_size(darray *array)
+{
+    return array->size;
 }
 
 
-/*
- * Access the element stored at index idx within the darray and return a
- * pointer to it. If the idx is out of range for the darray, return NULL
- * instead. If the provided array pointer is NULL, return NULL.
- */
-int *da_get(darray *array, size_t idx) {
- 
-}
 
-/*
- * Increase the length of array by 1 and place value within the newly created
- * spot. If the append operation fails, return 0. Otherwise return 1. Return 0
- * also if the provided array pointer is null.
- */
-int da_append(darray *array, int value) {
- 
-}
+// int main()
+// {
+//     darray* clobbah = da_create();
+//     da_append(clobbah, 1);
+//     da_append(clobbah, 2);
+//     da_append(clobbah, 3);
+//     da_append(clobbah, 4);
+//     da_append(clobbah, 5);
+//     da_append(clobbah, 6);
+//     da_append(clobbah, 7);
+//     int i;
+//     for(i = 0; clobbah->thearray[i] != '\0'; i++)
+//     {
+//         printf("%d ", clobbah->thearray[i]);
+//     }
+//     printf("\n");
+//     printf("%ls", da_get(clobbah, 4));
+//
+//
+//     return 0;
+// }
 
-/*
- * Returns the size of the array. Note that this size should be the accessible
- * size (using get, for example), not the physical size of the allocation,
- * which may be larger. If array is NULL, return 0.
- */
-size_t da_size(darray *array) {
- 
-}
-
-/*
- * Free all the allocated memory associated with array. If array is NULL, do
- * nothing.
- */
-void da_delete(darray *array) {
- 
-}
